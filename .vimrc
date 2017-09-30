@@ -1,151 +1,287 @@
-"**************************************
-" プラグイン設定
-"**************************************
-
-filetype off
-
-if has('vim_starting')
-  set nocompatible
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+"dein Scripts-----------------------------
+if &compatible
+  set nocompatible               " Be iMproved
 endif
 
-" neobundle.vimの初期化 
-call neobundle#begin(expand('~/.vim/bundle/'))
+" Required:
+set runtimepath+=/Users/keigo/.vim/dein//repos/github.com/Shougo/dein.vim
 
-" NeoBundleを更新するための設定
-NeoBundleFetch 'Shougo/neobundle.vim'
+" Required:
+if dein#load_state('/Users/keigo/.vim/dein/')
+  call dein#begin('/Users/keigo/.vim/dein/')
 
-NeoBundle 'vim-jp/vimdoc-ja'
+  " Let dein manage dein
+  " Required:
+  call dein#add('/Users/keigo/.vim/dein/repos/github.com/Shougo/dein.vim')
 
-NeoBundle 'stephpy/vim-yaml'
+  " Add or remove your plugins here:
+  call dein#add('Shougo/neosnippet.vim')
 
-NeoBundle 'thinca/vim-quickrun'
+  call dein#add('Shougo/neosnippet-snippets')
 
-NeoBundle 'junegunn/seoul256.vim'
+  " You can specify revision/branch/tag.
+  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
-NeoBundle 'scrooloose/nerdtree'
-nnoremap <silent><C-e> :NERDTree<CR>
+  call dein#add('scrooloose/nerdtree')
 
-"インデントに色を付けて見やすくするやつ
-NeoBundle 'nathanaelkane/vim-indent-guides'
-"vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
-let g:indent_guides_enable_on_vim_startup = 1
+  call dein#add('vim-airline/vim-airline')
 
-"NeoBundle 'kana/vim-smartinput'
+  call dein#add('ctrlpvim/ctrlp.vim')
 
-"Vimでの日本語入力・編集用に別コマンドを割り当てる
-NeoBundle 'deton/imactivatemap.vim'
-"
-"unit.vimーーーー
-NeoBundle 'Shougo/unite.vim'
-"
-"markdown関連の設定
-NeoBundle 'rcmdnk/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
+  call dein#add('thinca/vim-quickrun')
+
+  call dein#add('Shougo/neocomplete.vim')
+
+  call dein#add('Townk/vim-autoclose')
+
+  call dein#add('Yggdroot/indentLine')
+
+  call dein#add('ervandew/supertab')
+
+  call dein#add('glidenote/memolist.vim')
+
+  call dein#add('tpope/vim-fugitive')
+
+  call dein#add('dag/vim-fish')
+
+  call dein#add('itchyny/calendar.vim')
+
+  call dein#add('ctrlpvim/ctrlp.vim')
+  call dein#add('tacahiroy/ctrlp-funky')
+  call dein#add('suy/vim-ctrlp-commandline')
+
+  call dein#add('majutsushi/tagbar')
+
+  cal dein#add('wesleyche/SrcExpl')
+
+  " Docker
+  call dein#add('ekalinin/Dockerfile.vim')
+
+  " color scheme
+  call dein#add('dracula/vim')
+  call dein#add('sjl/badwolf')
+
+  " markdwon
+  call dein#add('tpope/vim-markdown')
+  call dein#add('rhysd/vim-gfm-syntax')
+
+  call dein#add('tephpy/vim-yaml')
+
+  " Python
+  call dein#add('davidhalter/jedi-vim')
+
+  " JavaScript
+  call dein#add('mattn/jscomplete-vim')
+  call dein#add('pangloss/vim-javascript')
+
+  " Node.js
+  call dein#add('myhere/vim-nodejs-complete')
+
+  " golang
+  call dein#add('fatih/vim-go')
+
+  " scala
+  call dein#add('derekwyatt/vim-scala')
+
+  " Terraform
+  call dein#add('hashivim/vim-terraform')
+
+  " slide tool (marp)
+  call dein#add('dhruvasagar/vim-marp')
+
+  call dein#add('LeafCage/yankround.vim')
+
+  " Required:
+  call dein#end()
+  call dein#save_state()
+endif
+
+" Required:
+filetype plugin indent on
+syntax enable
+
+" If you want to install not installed plugins on startup.
+"if dein#check_install()
+"  call dein#install()
+"endif
+
+"End dein Scripts-------------------------
+
+"**************************************************
+" 'myhere/vim-nodejs-complete'
+" http://qiita.com/toshihirock/items/39ee62ddee2eb997f7b7
+" http://qiita.com/ykyk1218/items/ab1c89c4eb6a2f90333a
+"**************************************************
+autocmd FileType javascript setlocal omnifunc=nodejscomplete#CompleteJS
+" TODO:neocomplcache -> neocomplete向けに設定を変更
+if !exists('g:neocomplete_omni_input_patterns')
+  let g:neocomplete_omni_input_patterns = {}
+endif
+let g:neocomplete_omni_input_patterns.javascript = 'nodejscomplete#CompleteJS'
+let g:node_usejscomplete = 1
+
+
+"----------------
+" glidenote/memolist.vim
+"----------------
+let g:memolist_memo_suffix = "md"
 "" markdownの拡張子を追加
 au BufRead,BufNewFile *.md set filetype=markdown
 
-"Docker用のシンタックス
-NeoBundle 'ekalinin/Dockerfile.vim'
+"----------------
+" mattn/calendar-vim
+"----------------
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
 
-NeoBundle 'vim-scripts/buftabs'
-" バッファタブにパスを省略してファイル名のみ表示する
-"let g:buftabs_only_basename=1
-" バッファタブをステータスライン内に表示する
-"let g:buftabs_in_statusline=1 ステータスライン表示するやつと競合しているか"も？
-" 現在のバッファをハイライト
-"let g:buftabs_active_highlight_group="Visual"
-"" next buffer
-"nmap <C-n> :bn<CR>
-"" back buffer
-"nmap <C-p> :bp<CR>
-
-
-"補完系のやーつ
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
+"----------------
+" Neocomplete
+" https://github.com/Shougo/neocomplete.vim
+"----------------
+"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 1
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
+let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+
 " Define dictionary.
-let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : ''
-    \ }
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
 " Plugin key-mappings.
-inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return neocomplcache#smart_close_popup() . "\<CR>"
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
-"serverspecのスニペット
-NeoBundle 'glidenote/serverspec-snippets'
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
 
-"golang系の設定
-NeoBundle 'fatih/vim-go'
-NeoBundle 'vim-jp/vim-go-extra'
-NeoBundle 'Blackrush/vim-gocode'
-set rtp+=$GOROOT/misc/vim
-let g:go_bin_path = expand("C:/go/bin")
-exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-set completeopt=menu,preview
-au FileType go nmap <Leader>i <Plug>(go-info)
-au FileType go nmap <Leader>gd <Plug>(go-doc)
-au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
-"ステータスラインをかっこよくするプラグインと設定
-NeoBundle 'itchyny/lightline.vim'
-let g:lightline = {
-      \ 'colorscheme': 'wombat'
-      \ }
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
-" ファイラー系の設定
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimfiler'
-"NeoBundle 'Shougo/vimproc'
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
-"Git関連の設定
-NeoBundle 'tpope/vim-fugitive'
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
-"メモをとるようのプラグイン
-NeoBundle 'glidenote/memolist.vim'
-let g:memolist_memo_suffix = "md"
+" 補完候補が出ていたら確定、なければ改行
+inoremap <expr><CR>  pumvisible() ? neocomplete#close_popup() : "<CR>"
+let g:neocomplete#max_list = 20
+" 補完候補の一番先頭を選択状態にする(AutoComplPopと似た動作)
+let g:neocomplete#enable_auto_select = 1
 
-"Rubyでendを自動で閉じるやつ
-NeoBundle 'tpope/vim-endwise'
+"----------------
+" Neocomplete
+"----------------
+" Plugin key-mappings.  " <C-k>でsnippetの展開
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
 
-NeoBundleCheck
-call neobundle#end()
+"----------------
+" yankround
+"----------------
+nmap p <Plug>(yankround-p)
+xmap p <Plug>(yankround-p)
+nmap P <Plug>(yankround-P)
+nmap gp <Plug>(yankround-gp)
+xmap gp <Plug>(yankround-gp)
+nmap gP <Plug>(yankround-gP)
+nmap <C-p> <Plug>(yankround-prev)
+nmap <C-n> <Plug>(yankround-next)
 
-filetype plugin indent on
+"----------------
+" Golang
+"**************************************
+"----------------
+" vim-go
+"----------------
+let g:go_fmt_command = "goimports"
+let g:godef_split=1
+let g:go_fmt_autosave = 1
+let g:go_metalinter_autosave = 1
+let g:go_hightlight_functions = 1
+let g:go_hightlight_methods = 1
+let g:go_hightlight_structs = 1
+let g:go_hightlight_interfaces = 1
+let g:go_hightlight_operators = 1
+let g:go_hightlight_build_constraints = 1
 
+"----------------
+" others
+"----------------
+augroup golang
+  autocmd!
+  autocmd BufNewFile,BufRead *.go setlocal tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
+
+let g:go_gocode_unimported_packages = 1
+let g:neocomplete#sources#omni#input_patterns.go = '\h\w\.\w*'
+
+
+"**************************************
+" Scala
+"**************************************
+au BufNewFile,BufRead *.scala setf scala
+
+"**************************************
+" HTML
+"**************************************
+autocmd BufNewFile,BufRead *.{html,htm,vue*} set filetype=html
+
+"**************************************
+" NERDTree
+"**************************************
+let g:NERDTreeShowBookmarks=1 "起動時にBookmarkを表示
+nnoremap <silent> tr :NERDTree<CR>"
 
 "**************************************
 " 基本設定
 "**************************************
-
 "文字コード
 :set fileencoding=utf-8
 :set fileformat=unix
@@ -231,10 +367,16 @@ highlight LineNr ctermfg=green
 """"""""""""""""""""""""""""""
 let mapleader = "\<Space>"
 
+
 "**************************************
 " キーのリマップ
 "**************************************
 
+""""""""""""""""""""""""""""""
+" <Leader>* によるキーバインドをスペースに変更
+" http://easyramble.com/vim-leader-space-vimrc.html
+""""""""""""""""""""""""""""""
+let mapleader = "\<Space>"
 """"""""""""""""""""""""""""""
 " コマンド履歴を<C->で変更
 """"""""""""""""""""""""""""""
@@ -256,12 +398,6 @@ nnoremap <silent><C-k>    <C-w>+
 nnoremap <silent><C-h>  <C-w><
 nnoremap <silent><C-l> <C-w>> カーソルキーでのウィンドウサイズ変更
 
-""""""""""""""""""""""""""""""
-" 自動的に閉じ括弧を入力
-""""""""""""""""""""""""""""""
-imap { {}<LEFT>
-imap [ []<LEFT>
-imap ( ()<LEFT>
 
 """"""""""""""""""""""""""""""
 " ファイル編集
@@ -276,9 +412,42 @@ nnoremap <Leader>q :q<CR>
 """"""""""""""""""""""""""""""
 imap <C-j> <C-[>
 
-
 """"""""""""""""""""""""""""""
 " 便利系ショートカット
 """"""""""""""""""""""""""""""
 "タイムスタンプを挿入してinsertモードへ移行
 nmap <F6> <ESC>i<C-R>=strftime("%Y/%m/%d (%a) %H:%M")<CR><CR>
+
+set encoding=utf-8
+"#set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+set fileencodings=utf-8
+set fileformats=unix,dos,mac
+
+""""""""""""""""""""""""""""""
+" カラーテーマ 
+""""""""""""""""""""""""""""""
+"colorscheme dracula
+colorscheme badwolf
+
+""""""""""""""""""""""""""""""
+" 日本語入力の設定
+" 参考) http://qiita.com/ssh0/items/9e7f0d8b8f033183dd0b
+""""""""""""""""""""""""""""""
+" 日本語入力がオンのままでも使えるコマンド(Enterキーは必要)
+nnoremap あ a
+nnoremap い i
+nnoremap う u
+nnoremap お o
+nnoremap っd dd
+nnoremap っy yy
+nnoremap ア A
+" jjでエスケープ
+inoremap <silent> jj <ESC>
+" 日本語入力で”っj”と入力してもEnterキーで確定させればインサートモードを抜ける
+inoremap <silent> っj <ESC>
+" 入力モードでのカーソル移動
+"inoremap <C-j> <Down>
+"inoremap <C-k> <Up>
+"inoremap <C-h> <Left>
+"inoremap <C-l> <Right>
+
